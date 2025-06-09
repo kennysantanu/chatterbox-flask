@@ -4,7 +4,7 @@ import torch
 import torchaudio
 from dotenv import load_dotenv
 from chatterbox.tts import ChatterboxTTS
-from flask import Flask, request, jsonify, Response
+from flask import Flask, request, jsonify, send_file
 
 app = Flask(__name__)
 
@@ -44,11 +44,8 @@ def tts():
         wav = model.generate(text, exaggeration=exaggeration, cfg_weight=cfg_weight, temperature=temperature)
         torchaudio.save(buffer, wav, model.sr, format='wav')
         buffer.seek(0)
-        
-        # Return the audio file as a response
-        return Response(buffer.read(), mimetype='audio/wav', headers={
-            'Content-Disposition': 'attachment; filename=output.wav'
-        })
+        # Return the audio file as a streaming response
+        return send_file(buffer, mimetype='audio/wav', as_attachment=True, download_name='output.wav')
     except Exception as e:
         print("TTS generation failed.")
         return jsonify({'error': f'TTS generation failed: {str(e)}'}), 500
