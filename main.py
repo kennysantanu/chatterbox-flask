@@ -34,6 +34,12 @@ else:
 # Endpoint for text-to-speech
 @app.route('/v1/tts', methods=['POST'])
 def tts():
+    """
+    POST /v1/tts
+    Receives JSON with a 'text' field and returns a WAV audio file generated from the text using Chatterbox TTS.
+    Request body: {"text": "Your text here"}
+    Response: audio/wav file as attachment
+    """
     data = request.get_json()
     if not data or 'text' not in data:
         return jsonify({'error': 'No text provided'}), 400
