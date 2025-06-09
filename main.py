@@ -10,6 +10,7 @@ app = Flask(__name__)
 
 # Load environment variables
 load_dotenv()
+port = int(os.getenv('PORT', '9203'))
 prompt_file = os.getenv('AUDIO_PROMPT', 'sample.mp3')
 audio_prompt_path = os.path.join('audio_prompt', prompt_file)
 exaggeration = float(os.getenv('EXAGGERATION', 0.5))
@@ -57,4 +58,4 @@ def tts():
         return jsonify({'error': f'TTS generation failed: {str(e)}'}), 500
     
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, port=port)
