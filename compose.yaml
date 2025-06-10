@@ -1,0 +1,12 @@
+services:
+  chatterbox-flask:
+    build:
+      context: .
+    volumes:
+      - audio-prompt:/audio_prompt
+    ports:
+      - 9203:9203
+    restart: unless-stopped
+
+volumes:
+  audio-prompt:
